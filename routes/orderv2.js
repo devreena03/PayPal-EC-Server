@@ -6,6 +6,7 @@ var router = express.Router();
 var sanboxUrl = 'https://api.sandbox.paypal.com';
 
 router.post('/create/', function(req, res) {
+    console.log("create order");
     console.log(req.body);
     var options = {
         uri: sanboxUrl + '/v2/checkout/orders',
@@ -58,7 +59,7 @@ router.post('/capture/', function(req, res) {
 
 //coming from ios
 router.get('/success/', function(req, res) {
-    console.log(req.query);
+    console.log("success");
     var options = {
         uri: sanboxUrl + '/v2/checkout/orders/'+req.query.token+'/capture',
         method: 'POST',
@@ -76,7 +77,6 @@ router.get('/success/', function(req, res) {
             if(response.statusCode == 200 || response.statusCode == 201) {
                 res.writeHead(302,{'Location':("com.reena.orderv2://success?token="+req.query.token)});       
             } else {
-                console.log(response.statusCode);
                 res.writeHead(302,{'Location':("com.reena.orderv2://error?token="+req.query.token)});
             }      
             res.end();
@@ -85,7 +85,7 @@ router.get('/success/', function(req, res) {
 });
 
 router.get('/cancel/', function(req, res) {
-    console.log(req.query);
+    console.log("cancel request");
     res.writeHead(302,{'Location':("com.reena.orderv2://cancel?token="+req.query.token)}); 
     res.end();
 });
